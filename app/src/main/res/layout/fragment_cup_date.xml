@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="4dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginRight="4dp"
+    android:background="@drawable/rectangle_shadow"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/frame_is_past"
+        android:layout_width="81dp"
+        android:layout_height="51dp"
+        android:background="@color/colorAccent">
+
+        <FrameLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_white">
+
+            <TextView
+                android:id="@+id/text_seq"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center|center_vertical"
+                android:gravity="center"
+                android:text="TextView"
+                android:textAlignment="gravity" />
+        </FrameLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/text_circuit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/text_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="end"
+        android:text="TextView" />
+</LinearLayout>

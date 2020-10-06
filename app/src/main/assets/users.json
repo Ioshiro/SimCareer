@@ -1,0 +1,18 @@
+{
+  "users": [
+    {
+      "id": "0",
+      "username": "admin",
+      "password": "admin",
+      "name": "Dmitry Golyshev",
+      "email": "dmitry.golyshev@studenti.unitn.it",
+      "dateOfBirth": "29/10/1995",
+      "localAddress": "Trento",
+      "pilotNumber": "42",
+      "favoriteCircuit": "Barcellona",
+      "hatedCircuit": "Jerez",
+      "favoriteCar": "Alfa Romeo Giulietta",
+      "picName": "l-15607-your-mom-straight-or-is-she.jpg"
+    }
+  ]
+}
