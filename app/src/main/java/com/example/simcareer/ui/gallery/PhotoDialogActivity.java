@@ -1,28 +1,23 @@
 package com.example.simcareer.ui.gallery;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialogFragment;
-
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatDialogFragment;
+
 import com.example.simcareer.R;
 import com.example.simcareer.bean.DbManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class PhotoDialogActivity extends AppCompatDialogFragment {
     ImageView imagePic;
@@ -80,7 +75,7 @@ public class PhotoDialogActivity extends AppCompatDialogFragment {
     }
 
 
-    public void doSocialShare(Uri uri){
+    public void doSocialShare(Uri uri) {
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("image/png");
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);

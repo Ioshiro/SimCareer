@@ -61,13 +61,20 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 if(inputPsw.getEditText().getText().toString().equals(user.getPassword())){
                     if(inputNewPsw.getEditText().getText().toString().equals(inputNewRepeatPsw.getEditText().getText().toString())){
-                        user.setPassword(inputNewPsw.getEditText().getText().toString());
-                        try {
-                            boolean isUpdated = DbManager.updateUserPassword(requireContext(), user);
-                            if(isUpdated)
-                                Toast.makeText(requireContext(), "Password aggiornata!", Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        if(!inputNewPsw.getEditText().getText().toString().equals(user.getPassword())) {
+                            user.setPassword(inputNewPsw.getEditText().getText().toString());
+                            try {
+                                boolean isUpdated = DbManager.updateUserPassword(requireContext(), user);
+                                if (isUpdated)
+                                    Toast.makeText(requireContext(), "Password aggiornata!", Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else{
+                            inputNewPsw.setError("Password nuova identica alla attuale");
+                            inputPsw.setError(" ");
+
                         }
                     }
                     else{
@@ -88,13 +95,19 @@ public class SettingsFragment extends Fragment {
                 String email = inputNewEmail.getEditText().getText().toString();
                 String remail = inputNewRepeatEmail.getEditText().getText().toString();
                 if(email.equals(remail)){
-                    user.setEmail(email);
-                    try {
-                        boolean isUpdated = DbManager.updateFullUser(requireContext(), user);
-                        if(isUpdated)
-                            Toast.makeText(requireContext(), "Email aggiornata!", Toast.LENGTH_SHORT).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if(!email.equals(user.getEmail())) {
+                        user.setEmail(email);
+                        try {
+                            boolean isUpdated = DbManager.updateFullUser(requireContext(), user);
+                            if (isUpdated)
+                                Toast.makeText(requireContext(), "Email aggiornata!", Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        inputNewEmail.setError("Email nuova uguale alla attuale");
+                        inputNewRepeatEmail.setError(" ");
                     }
                 }
                 else{

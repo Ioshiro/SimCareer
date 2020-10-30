@@ -81,6 +81,13 @@ public class RaceDate {
         else
             return false;
 
-
+        //TODO provare questa semplificazione ->
+        /*
+        Calendar today = Calendar.getInstance();
+        String[] split = this.date.split("/");
+        Calendar dateCompare = Calendar.getInstance();
+        dateCompare.set(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+        return dateCompare.before(today);
+        */
     }
 }

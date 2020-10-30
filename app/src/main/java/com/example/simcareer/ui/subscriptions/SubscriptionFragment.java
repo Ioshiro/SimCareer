@@ -46,9 +46,10 @@ public class SubscriptionFragment extends Fragment {
         try {
             user = DbManager.getFullUserById(requireContext(), id);
             List<CupSetting> cups = DbManager.getSubscribedCups(requireContext(), user.getName());
-            SubscriptionRecyclerAdapter adapter = new SubscriptionRecyclerAdapter(cups, user.getName());
+            SubscriptionRecyclerAdapter adapter = new SubscriptionRecyclerAdapter(cups, user.getName(), textEmpty);
             recyclerSubs.setLayoutManager(new LinearLayoutManager(requireContext()));
             recyclerSubs.setAdapter(adapter);
+
             if (cups.isEmpty()){
                 recyclerSubs.setVisibility(View.GONE);
                 textEmpty.setVisibility(View.VISIBLE);

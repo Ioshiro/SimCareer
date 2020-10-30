@@ -4,6 +4,7 @@
     <item
         android:id="@+id/action_nav_cup_to_nav_leaderboard"
         android:icon="@drawable/ic_menu_leaderboard"
-        app:showAsAction="ifRoom"
-        android:title="Leaderboard" />
+        android:title="Leaderboard"
+        android:visible="false"
+        app:showAsAction="always" />
 </menu>

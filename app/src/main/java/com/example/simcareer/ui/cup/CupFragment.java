@@ -41,6 +41,9 @@ import org.json.JSONException;
 
 public class CupFragment extends Fragment implements CupSubscribeDialog.CupListener {
 
+    static final int CALENDAR_FOCUS = 0;
+    static final int PILOT_FOCUS = 1;
+    static final int SETTINGS_FOCUS = 2;
     private CupViewModel mViewModel;
     private static CupSetting cup;
     RecyclerView recyclerView;
@@ -52,6 +55,7 @@ public class CupFragment extends Fragment implements CupSubscribeDialog.CupListe
     FloatingActionButton fabSubscribe;
     boolean isPilotSubscribed;
     User user;
+
 
     public static CupFragment newInstance() {
         return new CupFragment();
@@ -86,7 +90,7 @@ public class CupFragment extends Fragment implements CupSubscribeDialog.CupListe
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 try {
-                    setRecycler(tab.getPosition(),cup);
+                    setRecycler(tab.getPosition());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -100,7 +104,7 @@ public class CupFragment extends Fragment implements CupSubscribeDialog.CupListe
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
                 try {
-                    setRecycler(tab.getPosition(), cup);
+                    setRecycler(tab.getPosition());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -121,8 +125,8 @@ public class CupFragment extends Fragment implements CupSubscribeDialog.CupListe
                                 fabSubscribe.setBackgroundTintList(getResources().getColorStateList(R.color.colorPrimary));
                                 fabSubscribe.setImageResource(R.drawable.ic_plus_outline_24);
                                 isPilotSubscribed = false;
-                                if(tabLayout.getSelectedTabPosition() == 1){
-                                    setRecycler(1, cup);
+                                if(tabLayout.getSelectedTabPosition() == PILOT_FOCUS){
+                                    setRecycler(PILOT_FOCUS);
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -161,11 +165,11 @@ public class CupFragment extends Fragment implements CupSubscribeDialog.CupListe
         ActionBar actionBar = activity.getSupportActionBar();
         MainNavActivity.showIcon();
         id = CupFragmentArgs.fromBundle(getArguments()).getCupId();
-        Log.d("CupFragment.OnResume", "recieved id"+id);
+        //Log.d("CupFragment.OnResume", "recieved id"+id);
         try {
             cup = DbManager.getCupSetting(root.getContext(), id);
             actionBar.setTitle(cup.getName());
-            setRecycler(0, cup);
+            setRecycler(CALENDAR_FOCUS);
             isPilotSubscribed = DbManager.isPilotSubscribedToCup(requireContext(), user.getName(), id);
             if(isPilotSubscribed) {
                 fabSubscribe.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
@@ -181,19 +185,19 @@ public class CupFragment extends Fragment implements CupSubscribeDialog.CupListe
         super.onPause();
         MainNavActivity.hideIcon();
     }
-    public void setRecycler(int type, CupSetting cup) throws JSONException {
+    public void setRecycler(int type) throws JSONException {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        cup = DbManager.getCupSetting(requireContext(), id);
+        CupSetting cup = DbManager.getCupSetting(requireContext(), id);
         recyclerView.setLayoutManager(layoutManager);
-        if(type == 0)
+        if(type == CALENDAR_FOCUS)
             adapter = new CupCalendarRecyclerAdapter(cup);
-        if(type == 1)
+        if(type == PILOT_FOCUS)
             adapter = new CupPilotRecyclerAdapter(cup);
-        if(type == 2)
+        if(type == SETTINGS_FOCUS)
             adapter = new CupSettingRecyclerAdapter(cup);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
-        Log.d("setRecycler list size:",""+adapter.getItemCount());
+        //Log.d("setRecycler list size:",""+adapter.getItemCount());
     }
 
     @Override
@@ -202,15 +206,15 @@ public class CupFragment extends Fragment implements CupSubscribeDialog.CupListe
             User user = DbManager.getFullUserById(requireContext(), userId);
             Pilot newPilot = new Pilot(user.getName(), team, car);
             boolean isUpdated = DbManager.addCupPilot(requireContext(), newPilot, id);
-            Log.d("onSub", "added pilot new size: "+cup.getPilotsSubscribed().toString());
+            //Log.d("onSub", "added pilot new size: "+cup.getPilotsSubscribed().toString());
             if(isUpdated){
                 fabSubscribe.hide();
                 fabSubscribe.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
                 fabSubscribe.setImageResource(R.drawable.ic_remove_24);
                 fabSubscribe.show();
                 isPilotSubscribed = true;
-                if(tabLayout.getSelectedTabPosition() == 1){
-                    setRecycler(1, cup);
+                if(tabLayout.getSelectedTabPosition() == PILOT_FOCUS){
+                    setRecycler(PILOT_FOCUS);
                 }
             }
         } catch (JSONException e) {

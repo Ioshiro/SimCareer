@@ -36,22 +36,30 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(LoginActivity.this, MainNavActivity.class);
-                try {
-                    int id = DbManager.getUserId(LoginActivity.this, inputUsername.getText().toString(), inputPassword.getText().toString());
-                    if(id != -1) {
-                        i.putExtra("id", id);
-                        startActivity(i);
+                String username = inputUsername.getText().toString();
+                String password = inputPassword.getText().toString();
+                if(!username.isEmpty() && !password.isEmpty()){
+                    try {
+                        int id = DbManager.getUserId(LoginActivity.this, username, password);
+                        if(id != -1) {
+                            i.putExtra("id", id);
+                            startActivity(i);
+                        }
+                        else{
+                            TextInputLayout in = findViewById(R.id.inputUsername);
+                            in.setError(" ");
+                            TextInputLayout in2 = findViewById(R.id.inputPassword);
+                            in2.setError("Credenziali errate");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    else{
-                        TextInputLayout in = findViewById(R.id.inputUsername);
-                        in.setError(" ");
-                        TextInputLayout in2 = findViewById(R.id.inputPassword);
-
-                        in2.setError("Credenziali sbagliate");
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                }
+                else{
+                    TextInputLayout in = findViewById(R.id.inputUsername);
+                    in.setError(" ");
+                    TextInputLayout in2 = findViewById(R.id.inputPassword);
+                    in2.setError("Inserire credenziali");
                 }
             }
         });

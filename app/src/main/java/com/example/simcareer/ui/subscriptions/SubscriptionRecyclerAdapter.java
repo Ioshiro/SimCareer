@@ -24,19 +24,23 @@ import java.util.List;
 public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<SubscriptionRecyclerAdapter.ViewHolder> {
     private final List<CupSetting> cups;
     String pilotName;
+    TextView textEmpty;
+    View root;
 
-    public SubscriptionRecyclerAdapter(List<CupSetting> cups, String pilot) {
+    public SubscriptionRecyclerAdapter(List<CupSetting> cups, String pilot, TextView textEmpty) {
         this.cups = cups;
         this.pilotName = pilot;
+        this.textEmpty = textEmpty;
     }
 
     @androidx.annotation.NonNull
     @Override
     public SubscriptionRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View root = LayoutInflater.from(parent.getContext())
+        root = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_subscription_item, parent, false);
         return new SubscriptionRecyclerAdapter.ViewHolder(root);
     }
+
 
 
     @Override
@@ -67,6 +71,10 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
                     if(isRemoved){
                         cups.remove(position);
                         notifyDataSetChanged();
+                        if(cups.isEmpty()){
+                            root.setVisibility(View.GONE);
+                            textEmpty.setVisibility(View.VISIBLE);
+                        }
                     }
 
                 } catch (JSONException e) {
@@ -74,6 +82,8 @@ public class SubscriptionRecyclerAdapter extends RecyclerView.Adapter<Subscripti
                 }
             }
         });
+
+
     }
 
 

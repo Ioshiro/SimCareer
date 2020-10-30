@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,6 @@ public class RegistrationGeneralFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_registration_general, container, false);
 
-        //requireActivity().getActionBar().setTitle("Registrazione");
         textDate=(EditText) root.findViewById(R.id.text_edit_date);
         imagePropic = root.findViewById(R.id.image_pro_pic);
         buttonNext = (Button) root.findViewById(R.id.button_next);
@@ -86,6 +86,17 @@ public class RegistrationGeneralFragment extends Fragment {
             }
         });
 
+        inputEmail.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(!b){
+                    if(!isValidEmail(inputEmail.getText())){
+                        textDate.setError("Email non valida");
+                    }
+                }
+            }
+        });
+
         textDate.setInputType(InputType.TYPE_NULL);
         textDate.setClickable(true);
         textDate.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +111,13 @@ public class RegistrationGeneralFragment extends Fragment {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                textDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                                Calendar tmp = Calendar.getInstance();
+                                tmp.set(year, monthOfYear+1, dayOfMonth);
+                                if(!tmp.after(Calendar.getInstance()))
+                                    textDate.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                                else{
+                                    textDate.setError("Inserire data anteriore ad oggi");
+                                }
                             }
                         }, year, month, day);
                 picker.show();
@@ -156,22 +173,50 @@ public class RegistrationGeneralFragment extends Fragment {
         }
 
         String fullname = inputFullName.getText().toString();
+        if(fullname.isEmpty()){
+            inputFullName.setError("Inserire nome");
+            return null;
+        }
+
         String address = inputAddress.getText().toString();
+        if(address.isEmpty()){
+            inputAddress.setError("Inserire indirizzo");
+            return null;
+        }
+
         String dateofbirth = textDate.getText().toString();
+        if(dateofbirth.isEmpty()){
+            textDate.setError("Inserire data di nascità");
+            return null;
+        }
+
         String email = inputEmail.getText().toString();
+        if(email.isEmpty()){
+            inputEmail.setError("Inserire email");
+            return null;
+        }
+
         String remail = inputRepeatEmail.getText().toString();
+
         String psw = inputPassword.getText().toString();
+        if(psw.isEmpty()){
+            inputPassword.setError("Inserire password");
+            return null;
+        }
+
         String rpsw = inputRepeatPassword.getText().toString();
         if(!psw.equals(rpsw)){
             inputRepeatPassword.setError("");
             inputPassword.setError("Password diverse");
             return null;
         }
+
         if(!email.equals(remail)){
             inputRepeatEmail.setError("");
             inputEmail.setError("Email diverse");
             return null;
         }
+
         Bundle bundle = new Bundle();
         bundle.putString("username", username);
         bundle.putString("name", fullname);
@@ -181,4 +226,12 @@ public class RegistrationGeneralFragment extends Fragment {
         bundle.putString("password", psw);
         return bundle;
     }
+
+    public static boolean isValidEmail(CharSequence target) {
+        if (target == null)
+            return false;
+
+        return Patterns.EMAIL_ADDRESS.matcher(target).matches();
+    }
+
 }
